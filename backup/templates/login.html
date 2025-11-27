@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Faceguard AI</title>
+    <style>
+        body {
+          margin: 0;
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          overflow: hidden;
+          position: relative;
+        }
+
+        /* Wallpaper background with logo.jpg */
+        body::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: url('logo.jpg') no-repeat center center fixed;
+          background-size: cover;
+          opacity: 0.08; /* Low opacity so it’s faint */
+          z-index: 0;
+        }
+
+        .container {
+          background: rgba(0, 0, 0, 0.7);
+          padding: 40px 30px;
+          border-radius: 16px;
+          width: 100%;
+          max-width: 400px;
+          text-align: center;
+          box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+          position: relative;
+          z-index: 1;
+        }
+
+        h1 {
+          margin-bottom: 25px;
+          color: #aef7e8;
+          font-size: 2rem;
+        }
+
+        input {
+          width: 100%;
+          padding: 14px;
+          margin: 10px 0;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          box-sizing: border-box;
+        }
+
+        button {
+          width: 100%;
+          padding: 14px;
+          margin-top: 15px;
+          background: #aef7e8;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 1.1rem;
+          font-weight: bold;
+          color: #0b0f14;
+          transition: 0.3s;
+        }
+
+        button:hover {
+          background: #7de4d5;
+        }
+
+        p {
+          margin-top: 20px;
+          font-size: 0.95rem;
+        }
+
+        a {
+          color: #aef7e8;
+          text-decoration: none;
+          font-weight: bold;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        .error {
+          color: #ff6b6b;
+          margin-top: 12px;
+          font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Sign In</h1>
+    <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don’t have an account? <a href="/signup">Sign up here</a></p>
+    <div id="errorMsg" class="error"></div>
+</div>
+
+<script>
+    const loginForm = document.getElementById("loginForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    loginForm.addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        // send login data to Flask
+        const response = await fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, password: password })
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+            alert("✅ Login successful!");
+            window.location.href = "/";
+        } else {
+            errorMsg.textContent = "❌ " + result;
+        }
+    });
+</script>
+</body>
+</html>
+
+
+

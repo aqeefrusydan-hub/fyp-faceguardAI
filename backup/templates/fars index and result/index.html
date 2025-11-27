@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Get Started - Deepfake</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101820;
+      color: #eee;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    nav {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    nav a {
+      color: cyan;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    nav a:hover { text-decoration: underline; }
+    button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      background: teal;
+      color: white
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    button:hover { background: darkcyan; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="extension.html">Get Started</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+ 
+  <h1>Upload a File to Detect</h1>
+
+    <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+
+        <input type="file" id="fileInput" name="file" accept="image/*">
+        <button type="submit">Detect</button>
+    </form>
+
+    <p id="fileName"></p>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const uploadForm = document.getElementById('uploadForm');
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileName.textContent = "Selected file: " + fileInput.files[0].name;
+            } else {
+                fileName.textContent = "";
+            }
+        });
+
+        uploadForm.addEventListener('submit', (event) => {
+            if (fileInput.files.length === 0) {
+                event.preventDefault(); // stop form from submitting
+                alert("⚠️ Please select a file before clicking Detect!");
+            }
+        });
+    </script>
+</body>
+	
+</body>
+</html>
+
+
+

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Home - Deepfake Project</title>
+  <style>
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:Arial, sans-serif;
+      color:#eef8f7;
+      background:#0b0f14;
+      overflow-x:hidden;
+      height:100%;
+    }
+    canvas {position:fixed; inset:0; z-index:0; display:block;}
+
+    nav{position:fixed;top:18px;right:18px;z-index:5;}
+    nav a{color:#aef7e8;margin:0 8px;text-decoration:none;font-weight:700;}
+    nav a:hover{text-decoration:underline;}
+
+    .section {
+      position:relative;
+      z-index:2;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      text-align:center;
+    }
+
+    .details {
+      max-width: 800px;
+      background: rgba(255,255,255,0.08);
+      padding: 20px;
+      border-radius: 12px;
+    }
+	
+	.logo img { 
+	  max-width: 120px;
+	  margin-bottom: 20px;
+	  border-radius: 12px;
+	  border: 2px solid #aef7e8;
+	  box-shadow: 0 0 12px rgba(174,247,232,0.5);
+	}
+
+    /* Members grid */
+    .members {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      margin-top: 40px;
+      width:100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .member {
+      background: rgba(255,255,255,0.06);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      cursor:pointer;
+      transition:transform 0.2s;
+    }
+    .member:hover { transform: scale(1.05); }
+    .member strong { display:block; margin-top:10px; }
+    .member p { margin:5px 0 0 0; font-size: 0.9rem; color: #ddd; }
+    .member img {
+      width:100%;
+      max-width:150px;
+      height:auto;
+      border-radius:8px;
+      border:2px solid #fff;
+      margin:0 auto;
+      display:block;
+    }
+
+    /* Modal popup */
+    .modal {
+      display:none;
+      position:fixed;
+      z-index:10;
+      left:0; top:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.8);
+      padding-top:60px;
+    }
+    .modal-content {
+      background:#222;
+      margin:auto;
+      padding:20px;
+      border-radius:12px;
+      width:90%;
+      max-width:500px;
+      color:#fff;
+      text-align:left;
+      position:relative;
+      animation:slideDown 0.4s ease;
+    }
+    @keyframes slideDown {
+      from { transform:translateY(-50px); opacity:0; }
+      to { transform:translateY(0); opacity:1; }
+    }
+    .modal-content img {
+      max-width:120px;
+      border-radius:8px;
+      border:2px solid #fff;
+      margin-bottom:10px;
+    }
+    .close {
+      color:#aaa;
+      position:absolute;
+      top:10px;
+      right:20px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .close:hover { color:#fff; }
+	
+	.supervisor {
+	  max-width: 600px;
+	  background: rgba(255,255,255,0.08);
+	  padding: 20px;
+	  border-radius: 12px;
+	  text-align: center;
+	  margin-top: 30px;
+	}
+	
+	.supervisor img {
+	  width: 200px;
+	  height: auto;
+	  border-radius: 10px;
+	  border: 2px solid #fff;
+	  margin-bottom: 15px;
+	}
+	.supervisor h3 { margin: 10px 0 5px 0; }
+	.supervisor p { font-size: 0.95rem; color: #ddd; }
+	
+	/* Background watermark logo */
+	body::before {
+	  content: "";
+	  position: fixed;
+	  top: 50%;
+	  left: 50%;
+	  width: 400px;
+	  height: 400px;
+	  background: url('logo.png') no-repeat center center;
+	  background-size: contain;
+	  opacity: 0.05;
+	  transform: translate(-50%, -50%);
+	  z-index: 1;
+	  pointer-events: none;
+	}
+
+	/* FAQ Section */
+	.faq {
+	  max-width: 800px;
+	  width: 100%;
+	  margin: 30px auto;
+	  text-align: left;
+	}
+	.faq-item {
+	  margin-bottom: 15px;
+	  border: 1px solid rgba(255,255,255,0.2);
+	  border-radius: 8px;
+	  overflow: hidden;
+	}
+	.faq-question {
+	  width: 100%;
+	  background: rgba(255,255,255,0.1);
+	  border: none;
+	  color: #aef7e8;
+	  font-size: 1rem;
+	  font-weight: bold;
+	  text-align: left;
+	  padding: 12px 16px;
+	  cursor: pointer;
+	}
+	.faq-question:hover {
+	  background: rgba(255,255,255,0.2);
+	}
+	.faq-answer {
+	  display: none;
+	  background: rgba(0,0,0,0.3);
+	  padding: 12px 16px;
+	  color: #eee;
+	  font-size: 0.95rem;
+	}
+	.faq-answer p { margin: 0; }
+
+	.faq-toggle-btn {
+	  background: #1dd1a1;
+	  border: none;
+	  color: #fff;
+	  padding: 10px 18px;
+	  font-size: 1rem;
+	  font-weight: bold;
+	  border-radius: 8px;
+	  cursor: pointer;
+	  margin-bottom: 20px;
+	  transition: background 0.3s;
+	}
+	.faq-toggle-btn:hover { background: #10ac84; }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+  <canvas id="particles"></canvas>
+
+  <!-- Section 1 -->
+  <div class="section">
+    <nav>
+      <a href="{{ url_for('extension') }}">Extension</a>
+      <a href="{{ url_for('login') }}">Sign In</a>
+    </nav>
+    <div class="logo"><img src="logo.jpg" alt="Project Logo"></div>
+    <h1 class="main-title">AI Powered Deepfake Detection System</h1>
+    <div class="details fade-in">
+      <h2>About This Website</h2>
+      <p>Created by students from <strong>GMI</strong> for our Final Year Project (FYP).  
+      Our group is <strong>NWS126/23B</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <div class="section" style="background:rgba(0,0,0,0.45);">
+    <h2>Why Faceguard AI?</h2>
+    <div class="details fade-in">
+      <p>Deepfakes can create realistic fake images. While useful in art or education, they bring risks like fraud and identity theft.</p>
+      <p>Conventional tools often fail to detect them. With deepfake apps easily accessible, privacy and trust are at stake.</p>
+      <p>Our <strong>AI-powered detection</strong> helps protect individuals, organizations, and media from deepfake attacks.</p>
+    </div>
+  </div>
+
+  <!-- Members -->
+  <div class="section" style="background:rgba(0,0,0,0.5);">
+    <h2>Meet Our Group Members</h2>
+    <div class="members">
+      <div class="member"><img src="aqel.jpg"><strong>MUHAMMAD AQEL HARITH</strong><p>ID: NWS23070200</p></div>
+      <div class="member"><img src="aqip.jpg"><strong>MUHAMMAD AQEEF RUSYDAN</strong><p>ID: NWS23070192</p></div>
+      <div class="member"><img src="farr.jpg"><strong>NUR FARISYAH</strong><p>ID: NWS23070283</p></div>
+      <div class="member"><img src="harrazz.jpg"><strong>MUHAMMAD HARRAZZ</strong><p>ID: NWS23070249</p></div>
+    </div>
+  </div>
+
+  <!-- Supervisor -->
+  <div class="section" style="background:rgba(0,0,0,0.4);">
+    <h2>Meet Our Supervisor</h2>
+    <div class="supervisor">
+      <img src="sir.jpg" alt="Supervisor">
+      <h3>MUHAMMAD LUQMAN BIN SABANI</h3>
+      <p><strong>Role:</strong> Project Supervisor</p>
+      <p>Guided us with valuable insights and technical support throughout this project.</p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section" style="background:rgba(0,0,0,0.6);">
+    <h2>Frequently Asked Questions (FAQ)</h2>
+    <button id="toggleFaqBtn" class="faq-toggle-btn">Show FAQ</button>
+    <div id="faqSection" class="faq" style="display:none;">
+      <div class="faq-item">
+        <button class="faq-question">❓ What is Faceguard AI?</button>
+        <div class="faq-answer"><p>An AI system that detects deepfake media.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">❓ Who developed this project?</button>
+        <div class="faq-answer"><p>Students of <strong>NWS126/23B</strong> from <strong>GMI</strong>, with supervisor Mr. Luqman.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">❓ How does it work?</button>
+        <div class="faq-answer"><p>By analyzing images/videos with AI to detect manipulations.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Bubble background
+    const canvas = document.getElementById('bg'), ctx = canvas.getContext('2d');
+    function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    let t=0;
+    function draw(){
+      t+=0.02;
+      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      g.addColorStop(0, `hsl(${200+Math.sin(t)*50},70%,30%)`);
+      g.addColorStop(1, `hsl(${160+Math.cos(t)*50},70%,15%)`);
+      ctx.fillStyle=g; ctx.fillRect(0,0,canvas.width,canvas.height);
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // Particles with connecting lines
+    const pCanvas=document.getElementById('particles'),pCtx=pCanvas.getContext('2d');
+    function resizeP(){pCanvas.width=innerWidth;pCanvas.height=innerHeight;}
+    window.addEventListener('resize',resizeP);resizeP();
+    const particles=[];
+    for(let i=0;i<80;i++){
+      particles.push({x:Math.random()*pCanvas.width,y:Math.random()*pCanvas.height,
+        vx:(Math.random()-0.5)*0.7,vy:(Math.random()-0.5)*0.7});
+    }
+    function drawParticles(){
+      pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+      for(let p of particles){
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0||p.x>pCanvas.width) p.vx*=-1;
+        if(p.y<0||p.y>pCanvas.height) p.vy*=-1;
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,2,0,Math.PI*2);
+        pCtx.fillStyle="rgba(255,255,255,0.7)";
+        pCtx.fill();
+      }
+      // draw connecting lines
+      for(let i=0;i<particles.length;i++){
+        for(let j=i+1;j<particles.length;j++){
+          const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+          const dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<120){
+            pCtx.strokeStyle="rgba(255,255,255,"+(1-dist/120)+")";
+            pCtx.beginPath();
+            pCtx.moveTo(particles[i].x,particles[i].y);
+            pCtx.lineTo(particles[j].x,particles[j].y);
+            pCtx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // Parallax logo
+    window.addEventListener('scroll',()=>{
+      const offset=window.scrollY*0.2;
+      document.body.style.setProperty('--scrollY', offset+"px");
+      document.body.style.setProperty('transform',`translateY(${offset}px)`);
+    });
+
+    // FAQ toggle
+    const toggleFaqBtn=document.getElementById("toggleFaqBtn");
+    const faqSection=document.getElementById("faqSection");
+    toggleFaqBtn.addEventListener("click",()=>{
+      if(faqSection.style.display==="none"){faqSection.style.display="block";toggleFaqBtn.textContent="Hide FAQ";}
+      else{faqSection.style.display="none";toggleFaqBtn.textContent="Show FAQ";}
+    });
+    document.querySelectorAll(".faq-question").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const ans=btn.nextElementSibling;
+        ans.style.display=ans.style.display==="block"?"none":"block";
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+

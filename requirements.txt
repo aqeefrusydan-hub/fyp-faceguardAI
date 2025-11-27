@@ -1,0 +1,10 @@
+Flask
+tensorflow-cpu
+keras
+numpy
+gspread
+google-auth
+h5py
+gunicorn
+pillow
+gdown

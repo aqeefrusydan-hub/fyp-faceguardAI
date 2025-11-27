@@ -1,0 +1,11 @@
+deepfake_detector/
+│
+├─ app.py
+├─ train_model.py
+├─ model.h5
+├─ uploads/         # uploaded images
+├─ templates/
+│   ├─ index.html
+│   └─ result.html
+└─ static/
+    └─ style.css
