@@ -25,7 +25,7 @@ def download_model():
 
     if not os.path.exists(MODEL_PATH):
         print("Model not found. Downloading...")
-        url = "https://drive.google.com/uc?export=download&id=1TfXYhTK0G_1hyg955JYjiqTj-6Tb8GHv"
+        url = "https://github.com/aqeefrusydan-hub/fyp-faceguardAI/releases/download/v1.0/xception_deepfake.h5"
         gdown.download(url, MODEL_PATH, quiet=False)
         print("Model download complete!")
 
