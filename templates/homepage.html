@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -44,7 +44,9 @@
         .faq-question,
         .faq-answer,
         .member p,
-        .details * {
+        .details *,
+        .supervisor *,
+        .section * {
             color: #ffffff !important;
         }
 
@@ -82,6 +84,7 @@
             box-shadow: 0 0 15px rgba(174,247,232,0.3);
         }
 
+        /* White icons + purple glow */
         .feature-icon {
             width: 55px;
             height: 55px;
@@ -115,6 +118,7 @@
           box-shadow: 0 0 12px rgba(174,247,232,0.5);
         }
 
+        /* MEMBERS SECTION FIX (Equal-size images) */
         .members {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -139,8 +143,9 @@
             transform: scale(1.05);
         }
 
+        /* FIXED FRAME: all same size */
         .member img {
-          width:100%;
+          width:150px;
           height:150px;
           object-fit:cover;
           border-radius:8px;
@@ -196,6 +201,7 @@
         }
 
         .faq-answer {
+          display: none;
           background: rgba(0,0,0,0.3);
           padding: 12px 16px;
           font-size: 0.95rem;
@@ -240,6 +246,76 @@
         <h3 style="margin-top:25px;">Why FaceGuard AI?</h3>
         <p>Deepfake tools are easily accessible, and traditional detection methods struggle to keep up. FaceGuard AI uses advanced CNN-based models for reliable detection.</p>
         <p>Our system helps protect individuals, organizations, and digital platforms from deepfake threats.</p>
+    </div>
+</div>
+
+<!-- KEY FEATURES -->
+<div class="section" style="background:rgba(0,0,0,0.55); padding-top: 60px;">
+    <h2 class="features-title">Key Features</h2>
+    <p class="features-subtitle">Explore the powerful capabilities of our AI-based deepfake detection system.</p>
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 3a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h.5v7a1.5 1.5 0 0 0 3 0v-7H13a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v4a1 1 0 0 1-2 0V6a1 1 0 0 1 1-1 1 1 0 0 0 0-2z"/>
+                </svg>
+            </div>
+            <h3>CNN-based Deepfake Detection</h3>
+            <p>Uses a trained Convolutional Neural Network model to classify images as real or fake.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 3h6v2h2v2h2v6h-2v2h-2v2H9v-2H7v-2H5V7h2V5h2z"/>
+                </svg>
+            </div>
+            <h3>AI / ML Image Classification</h3>
+            <p>Advanced machine learning models analyze facial structures and pixel patterns.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1a5 5 0 0 0-5 5v4H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5z"/>
+                </svg>
+            </div>
+            <h3>Secure User Authentication</h3>
+            <p>Credential hashing and safe session management protect user accounts.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 5h18v4H3zm0 6h18v8H3z"/>
+                </svg>
+            </div>
+            <h3>User-Friendly Interface</h3>
+            <p>Simple and intuitive UI designed for fast deepfake detection.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 17h14v2H5zm7-12l5 5h-3v4h-4v-4H7z"/>
+                </svg>
+            </div>
+            <h3>Image Upload & Logging</h3>
+            <p>Uploads, processes, and logs results securely for analysis and review.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                </svg>
+            </div>
+            <h3>Responsive Web Design</h3>
+            <p>Optimized for both desktop and laptop screens.</p>
+        </div>
+
     </div>
 </div>
 
@@ -339,40 +415,33 @@
     <h2>Meet Our Supervisor</h2>
 
     <div class="supervisor">
-        <img src="https://github.com/aqeefrusydan-hub/fyp-faceguardAI/blob/main/static/WhatsApp%20Image%202025-11-30%20at%205.01.42%20PM%20(1).jpeg?raw=true">
-        <h3>MUHAMMAD LUQMAN HAKIM BIN MOHD SABANI</h3>
+        <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/SIR.jpeg">
+        <h3>MUHAMMAD LUQMAN BIN SABANI</h3>
         <p><strong>Role:</strong> Project Supervisor</p>
         <p>Provided valuable guidance and technical support throughout the project.</p>
     </div>
 </div>
 
-<!-- FAQ Section -->
+<!-- FAQ -->
 <div class="section" style="background:rgba(0,0,0,0.6);">
     <h2>Frequently Asked Questions (FAQ)</h2>
+    <button id="toggleFaqBtn" class="faq-toggle-btn">Show FAQ</button>
 
-    <div class="faq">
-
+    <div id="faqSection" class="faq" style="display:none;">
         <div class="faq-item">
-            <h3 class="faq-question">❓ What is Faceguard AI?</h3>
-            <div class="faq-answer">
-                <p>FaceGuard AI is an AI-powered system designed to detect deepfake media, including manipulated images and videos.</p>
-            </div>
+            <button class="faq-question">❓ What is FaceGuard AI?</button>
+            <div class="faq-answer"><p>An AI system that detects manipulated images.</p></div>
         </div>
 
         <div class="faq-item">
-            <h3 class="faq-question">❓ Who developed this project?</h3>
-            <div class="faq-answer">
-                <p>This project was developed by students of <strong>NWS126/23B</strong> from <strong>GMI</strong>, under the guidance of our supervisor, Mr. Luqman.</p>
-            </div>
+            <button class="faq-question">❓ Who developed this?</button>
+            <div class="faq-answer"><p>Students of <strong>NWS126/23B</strong> from <strong>GMI</strong>.</p></div>
         </div>
 
         <div class="faq-item">
-            <h3 class="faq-question">❓ How does it work?</h3>
-            <div class="faq-answer">
-                <p>The system analyzes images or videos with AI models to detect any signs of manipulation, such as inconsistencies in facial features or pixel patterns.</p>
-            </div>
+            <button class="faq-question">❓ How does it work?</button>
+            <div class="faq-answer"><p>By analyzing image pixels using deep-learning models.</p></div>
         </div>
-
     </div>
 </div>
 
@@ -427,6 +496,25 @@
     }
 
     draw();
+
+    /* FAQ Toggle */
+    document.querySelectorAll(".faq-question").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const ans=btn.nextElementSibling;
+        ans.style.display=ans.style.display==="block"?"none":"block";
+      });
+    });
+
+    const toggleBtn = document.getElementById("toggleFaqBtn");
+    const faqSection = document.getElementById("faqSection");
+
+    toggleBtn.addEventListener("click", () => {
+        faqSection.style.display =
+            faqSection.style.display === "none" ? "block" : "none";
+        toggleBtn.textContent =
+            faqSection.style.display === "block" ? "Hide FAQ" : "Show FAQ";
+    });
+
 </script>
 
 </body>
