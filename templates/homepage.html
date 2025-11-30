@@ -1,29 +1,102 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Home - Deepfake Project</title>
+
     <style>
         html,body{
           margin:0;
           padding:0;
           font-family:Arial, sans-serif;
-          color:#eef8f7;
+          color:#ffffff;
           background:#0b0f14;
           overflow-x:hidden;
           height:100%;
         }
+
         canvas {position:fixed; inset:0; z-index:0; display:block;}
 
-        nav{position:fixed;top:18px;right:18px;z-index:5;}
+        nav{
+          position:fixed;
+          top:18px;
+          right:18px;
+          z-index:5;
+        }
+
         nav a{
           color:#aef7e8;
           margin:0 8px;
           text-decoration:none;
           font-weight:700;
         }
-        nav a:hover{text-decoration:underline;}
+
+        nav a:hover{
+          text-decoration:underline;
+        }
+
+        /* Global white text */
+        h1, h2, h3, h4, h5, h6,
+        p, strong, span,
+        .features-title,
+        .features-subtitle,
+        .faq-question,
+        .faq-answer,
+        .member p,
+        .details *,
+        .supervisor *,
+        .section * {
+            color: #ffffff !important;
+        }
+
+        .features-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .features-subtitle {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.06);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.25s, box-shadow 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(174,247,232,0.3);
+        }
+
+        /* White icons + purple glow */
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 12px auto;
+            filter: drop-shadow(0 0 10px rgba(180,140,255,0.9));
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #ffffff;
+        }
 
         .section {
           position:relative;
@@ -37,13 +110,6 @@
           text-align:center;
         }
 
-        .details {
-          max-width: 800px;
-          background: rgba(255,255,255,0.08);
-          padding: 20px;
-          border-radius: 12px;
-        }
-
         .logo img {
           max-width: 120px;
           margin-bottom: 20px;
@@ -52,6 +118,7 @@
           box-shadow: 0 0 12px rgba(174,247,232,0.5);
         }
 
+        /* MEMBERS SECTION FIX (Equal-size images) */
         .members {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -67,64 +134,27 @@
           background: rgba(255,255,255,0.06);
           padding: 16px;
           border-radius: 12px;
-          text-align: center;
+          text-align:center;
           cursor:pointer;
           transition:transform 0.2s;
         }
-        .member:hover { transform: scale(1.05); }
-        .member strong { display:block; margin-top:10px; }
-        .member p { margin:5px 0 0 0; font-size: 0.9rem; color: #ddd; }
-        .member img {
-          width:100%;
-          max-width:150px;
-          height:auto;
-          border-radius:8px;
-          border:2px solid #fff;
-          margin:0 auto;
-          display:block;
+
+        .member:hover {
+            transform: scale(1.05);
         }
 
-        .modal {
-          display:none;
-          position:fixed;
-          z-index:10;
-          left:0; top:0;
-          width:100%; height:100%;
-          background:rgba(0,0,0,0.8);
-          padding-top:60px;
-        }
-        .modal-content {
-          background:#222;
-          margin:auto;
-          padding:20px;
-          border-radius:12px;
-          width:90%;
-          max-width:500px;
-          color:#fff;
-          text-align:left;
-          position:relative;
-          animation:slideDown 0.4s ease;
-        }
-        @keyframes slideDown {
-          from { transform:translateY(-50px); opacity:0; }
-          to { transform:translateY(0); opacity:1; }
-        }
-        .modal-content img {
-          max-width:120px;
+        /* FIXED FRAME: all same size */
+        .member img {
+          width:100%px;
+          height:150px;
+          object-fit:cover;
           border-radius:8px;
           border:2px solid #fff;
-          margin-bottom:10px;
+          display:block;
+          margin:0 auto;
         }
-        .close {
-          color:#aaa;
-          position:absolute;
-          top:10px;
-          right:20px;
-          font-size:28px;
-          font-weight:bold;
-          cursor:pointer;
-        }
-        .close:hover { color:#fff; }
+
+        .member p { color:#eee; font-size: 0.9rem; }
 
         .supervisor {
           max-width: 600px;
@@ -141,77 +171,50 @@
           border-radius: 10px;
           border: 2px solid #fff;
           margin-bottom: 15px;
+          object-fit: cover;
         }
 
-        body::before {
-          content: "";
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          width: 400px;
-          height: 400px;
-          background: url('logo.png') no-repeat center center;
-          background-size: contain;
-          opacity: 0.05;
-          transform: translate(-50%, -50%);
-          z-index: 1;
-          pointer-events: none;
-        }
-
+        /* FAQ */
         .faq {
           max-width: 800px;
           width: 100%;
           margin: 30px auto;
           text-align: left;
         }
+
         .faq-item {
           margin-bottom: 15px;
           border: 1px solid rgba(255,255,255,0.2);
           border-radius: 8px;
           overflow: hidden;
         }
+
         .faq-question {
           width: 100%;
           background: rgba(255,255,255,0.1);
           border: none;
-          color: #aef7e8;
           font-size: 1rem;
           font-weight: bold;
           text-align: left;
           padding: 12px 16px;
           cursor: pointer;
         }
-        .faq-question:hover {
-          background: rgba(255,255,255,0.2);
-        }
+
         .faq-answer {
           display: none;
           background: rgba(0,0,0,0.3);
           padding: 12px 16px;
-          color: #eee;
           font-size: 0.95rem;
         }
-        .faq-answer p { margin: 0; }
 
-        .faq-toggle-btn {
-          background: #1dd1a1;
-          border: none;
-          color: #fff;
-          padding: 10px 18px;
-          font-size: 1rem;
-          font-weight: bold;
-          border-radius: 8px;
-          cursor: pointer;
-          margin-bottom: 20px;
-          transition: background 0.3s;
-        }
-        .faq-toggle-btn:hover { background: #10ac84; }
     </style>
 </head>
 <body>
+
 <canvas id="bg"></canvas>
 <canvas id="particles"></canvas>
 
+<!-- HEADER -->
 <div class="section">
     <nav>
         {% if session.get("logged_in") %}
@@ -222,229 +225,307 @@
         {% endif %}
     </nav>
 
-    <div class="logo"><img
-            src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/2ad0a9ea-77e2-4d57-a251-09a81bab500b.png"
-            alt="Project Logo"></div>
-
-    <h1 class="main-title">AI Powered Deepfake Detection System</h1>
-
-    <div class="details fade-in">
-        <h2>About This Website</h2>
-        <p>Created by students from <strong>GMI</strong> for our Final Year Project (FYP).</p>
+    <div class="logo">
+        <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/2ad0a9ea-77e2-4d57-a251-09a81bab500b.png"
+             alt="Project Logo">
     </div>
+
+    <h1 class="main-title">Deepfake Detection System</h1>
+    <p style="font-size:1.2rem; margin-top:15px; opacity:0.9;">Check before you trust</p>
+
 </div>
 
-<!-- Intro -->
+<!-- PROJECT OVERVIEW -->
 <div class="section" style="background:rgba(0,0,0,0.45);">
-    <h2>Why Faceguard AI?</h2>
+    <h2>Project Overview</h2>
+
     <div class="details fade-in">
-        <p>Deepfakes can create realistic fake images. While useful in art or education, they bring risks like fraud and
-            identity theft.</p>
-        <p>Conventional tools often fail to detect them. With deepfake apps easily accessible, privacy and trust are at
-            stake.</p>
-        <p>Our <strong>AI-powered detection</strong> helps protect individuals, organizations, and media from deepfake
-            attacks.</p>
+        <h3 style="margin-top:10px;">What is Deepfake?</h3>
+        <p>Deepfakes use AI to manipulate images or videos into realistic yet fake content. While creative, they pose serious risks like identity theft, misinformation, and fraud.</p>
+
+        <h3 style="margin-top:25px;">Why FaceGuard AI?</h3>
+        <p>Deepfake tools are easily accessible, and traditional detection methods struggle to keep up. FaceGuard AI uses advanced CNN-based models for reliable detection.</p>
+        <p>Our system helps protect individuals, organizations, and digital platforms from deepfake threats.</p>
     </div>
 </div>
 
-<!-- User Guide -->
+<!-- KEY FEATURES -->
+<div class="section" style="background:rgba(0,0,0,0.55); padding-top: 60px;">
+    <h2 class="features-title">Key Features</h2>
+    <p class="features-subtitle">Explore the powerful capabilities of our AI-based deepfake detection system.</p>
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 3a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h.5v7a1.5 1.5 0 0 0 3 0v-7H13a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v4a1 1 0 0 1-2 0V6a1 1 0 0 1 1-1 1 1 0 0 0 0-2z"/>
+                </svg>
+            </div>
+            <h3>CNN-based Deepfake Detection</h3>
+            <p>Uses a trained Convolutional Neural Network model to classify images as real or fake.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 3h6v2h2v2h2v6h-2v2h-2v2H9v-2H7v-2H5V7h2V5h2z"/>
+                </svg>
+            </div>
+            <h3>AI / ML Image Classification</h3>
+            <p>Advanced machine learning models analyze facial structures and pixel patterns.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1a5 5 0 0 0-5 5v4H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5z"/>
+                </svg>
+            </div>
+            <h3>Secure User Authentication</h3>
+            <p>Credential hashing and safe session management protect user accounts.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 5h18v4H3zm0 6h18v8H3z"/>
+                </svg>
+            </div>
+            <h3>User-Friendly Interface</h3>
+            <p>Simple and intuitive UI designed for fast deepfake detection.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 17h14v2H5zm7-12l5 5h-3v4h-4v-4H7z"/>
+                </svg>
+            </div>
+            <h3>Image Upload & Logging</h3>
+            <p>Uploads, processes, and logs results securely for analysis and review.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                </svg>
+            </div>
+            <h3>Responsive Web Design</h3>
+            <p>Optimized for both desktop and laptop screens.</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- USER GUIDE -->
 <div class="section" style="background:rgba(0,0,0,0.55);">
-    <h2 style="margin-bottom: 10px;">User Guide</h2>
-    <p style="max-width:700px; margin-bottom:25px; color:#d9fffa;">
-        Follow these simple steps to get started with FaceGuard AI. Each step can be expanded for more details.
+    <h2>User Guide</h2>
+    <p style="max-width:700px; margin-bottom:25px;">
+        Follow these simple steps to get started with FaceGuard AI.
     </p>
 
-    <div class="faq" style="max-width:800px; width:100%;">
+    <div class="faq">
 
-        <div class="faq-item" style="border-left:5px solid #1dd1a1;">
-            <button class="faq-question">💻 Step 1: Access the Website</button>
+        <div class="faq-item">
+            <button class="faq-question">Step 1: Access the Website</button>
             <div class="faq-answer">
-                <p>Open the FaceGuard AI homepage. The homepage provides access to all major features including Sign In and DeepFake Tools.</p>
+                <p>Open the FaceGuard AI homepage and explore the available features.</p>
             </div>
         </div>
 
-        <div class="faq-item" style="border-left:5px solid #48dbfb;">
-            <button class="faq-question">🔐 Step 2: Sign In</button>
+        <div class="faq-item">
+            <button class="faq-question">Step 2: Sign In</button>
             <div class="faq-answer">
-                <p>Click <strong>Sign In</strong> at the top-right corner. Enter your email and password to log in securely. This unlocks the deepfake detection tools.</p>
+                <p>Log in using your registered email and password to unlock detection tools.</p>
             </div>
         </div>
 
-        <div class="faq-item" style="border-left:5px solid #ff9ff3;">
-            <button class="faq-question">📝 Step 3: Create a New Account</button>
+        <div class="faq-item">
+            <button class="faq-question">Step 3: Create a New Account</button>
             <div class="faq-answer">
-                <p>If you don't have an account, click <strong>Sign Up</strong> and fill in your name, email, and password. Your account is stored safely.</p>
+                <p>If you're new, sign up and your credentials will be securely stored.</p>
             </div>
         </div>
 
-        <div class="faq-item" style="border-left:5px solid #feca57;">
-            <button class="faq-question">📤 Step 4: Upload an Image</button>
+        <div class="faq-item">
+            <button class="faq-question">Step 4: Upload an Image</button>
             <div class="faq-answer">
-                <p>Navigate to the <strong>DeepFake Tools</strong> section. Upload a face image in JPG or PNG format. Click <strong>Predict</strong> to start the detection process.</p>
+                <p>Upload a face image in JPG or PNG. Click "Predict" to start detection.</p>
             </div>
         </div>
 
-        <div class="faq-item" style="border-left:5px solid #ff6b6b;">
-            <button class="faq-question">🔍 Step 5: View Detection Results</button>
+        <div class="faq-item">
+            <button class="faq-question">Step 5: View Detection Results</button>
             <div class="faq-answer">
-                <p>The system will show a detailed output that includes:</p>
+                <p>You will receive:</p>
                 <ul>
-                    <li>REAL or FAKE classification</li>
-                    <li>Confidence percentages</li>
-                    
+                    <li>REAL / FAKE classification</li>
+                    <li>Confidence score</li>
                 </ul>
-                <p>The analysis is powered by the trained Xception deepfake detection model.</p>
             </div>
         </div>
 
-        <div class="faq-item" style="border-left:5px solid #54a0ff;">
-            <button class="faq-question">🚪 Step 6: Logout</button>
+        <div class="faq-item">
+            <button class="faq-question">Step 6: Logout</button>
             <div class="faq-answer">
-                <p>Click <strong>Logout</strong> on the navigation bar to securely end your session and return to the homepage.</p>
+                <p>Click Logout to securely end your session.</p>
             </div>
         </div>
 
     </div>
 </div>
 
-
-<!-- Members -->
+<!-- MEMBERS -->
 <div class="section" style="background:rgba(0,0,0,0.5);">
     <h2>Meet Our Group Members</h2>
+
     <div class="members">
-        <div class="member"><img
-                src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/aqel.jpg.jpeg"><strong>MUHAMMAD
-            AQEL
-            HARITH</strong>
-            <p>ID: NWS23070200</p></div>
-        <div class="member"><img
-                src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/aqip.jpg.jpeg"><strong>MUHAMMAD
-            AQEEF RUSYDAN</strong>
-            <p>ID: NWS23070192</p></div>
-        <div class="member"><img
-                src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/farr.jpg.jpeg"><strong>NUR
-            FARISYAH</strong>
-            <p>ID: NWS23070283</p></div>
-        <div class="member"><img
-                src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/harrazz.jpg.jpeg"><strong>MUHAMMAD
-            HARRAZZ</strong>
-            <p>ID: NWS23070249</p></div>
+
+        <div class="member">
+            <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/aqel.jpg.jpeg">
+            <strong>MUHAMMAD AQEL HARITH</strong>
+            <p>ID: NWS23070200</p>
+        </div>
+
+        <div class="member">
+            <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/aqip.jpg.jpeg">
+            <strong>MUHAMMAD AQEEF RUSYDAN</strong>
+            <p>ID: NWS23070192</p>
+        </div>
+
+        <div class="member">
+            <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/farr.jpg.jpeg">
+            <strong>NUR FARISYAH</strong>
+            <p>ID: NWS23070283</p>
+        </div>
+
+        <div class="member">
+            <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/harrazz.jpg.jpeg">
+            <strong>MUHAMMAD HARRAZZ</strong>
+            <p>ID: NWS23070249</p>
+        </div>
+
     </div>
 </div>
 
-<!-- Supervisor -->
+<!-- SUPERVISOR -->
 <div class="section" style="background:rgba(0,0,0,0.4);">
     <h2>Meet Our Supervisor</h2>
+
     <div class="supervisor">
-        <img src="https://raw.githubusercontent.com/aqeefrusydan-hub/fyp-faceguardAI/refs/heads/main/static/SIR.jpeg"
-             alt="Supervisor">
-        <h3>MUHAMMAD LUQMAN BIN SABANI</h3>
+        <img src="https://github.com/aqeefrusydan-hub/fyp-faceguardAI/blob/main/static/WhatsApp%20Image%202025-11-30%20at%205.01.42%20PM%20(1).jpeg?raw=true">
+        <h3>MUHAMMAD LUQMAN HAKIM BIN MOHD SABANI</h3>
         <p><strong>Role:</strong> Project Supervisor</p>
-        <p>Guided us with valuable insights and technical support throughout this project.</p>
+        <p>Provided valuable guidance and technical support throughout the project.</p>
     </div>
 </div>
 
 <!-- FAQ -->
+<!-- FAQ -->
 <div class="section" style="background:rgba(0,0,0,0.6);">
     <h2>Frequently Asked Questions (FAQ)</h2>
-    <button id="toggleFaqBtn" class="faq-toggle-btn">Show FAQ</button>
-    <div id="faqSection" class="faq" style="display:none;">
+
+    <div class="faq">
+
         <div class="faq-item">
-            <button class="faq-question">❓ What is Faceguard AI?</button>
-            <div class="faq-answer"><p>An AI system that detects deepfake media.</p></div>
+            <input type="checkbox" id="faq1" class="faq-toggle">
+            <label for="faq1" class="faq-question">❓ What is Faceguard AI?</label>
+            <div class="faq-answer">
+                <p>An AI system that detects deepfake media.</p>
+            </div>
         </div>
+
         <div class="faq-item">
-            <button class="faq-question">❓ Who developed this project?</button>
-            <div class="faq-answer"><p>Students of <strong>NWS126/23B</strong> from <strong>GMI</strong>, with
-                supervisor Mr. Luqman.</p></div>
+            <input type="checkbox" id="faq2" class="faq-toggle">
+            <label for="faq2" class="faq-question">❓ Who developed this project?</label>
+            <div class="faq-answer">
+                <p>Students of <strong>NWS126/23B</strong> from <strong>GMI</strong>, with supervisor Mr. Luqman.</p>
+            </div>
         </div>
+
         <div class="faq-item">
-            <button class="faq-question">❓ How does it work?</button>
-            <div class="faq-answer"><p>By analyzing images/videos with AI to detect manipulations.</p></div>
+            <input type="checkbox" id="faq3" class="faq-toggle">
+            <label for="faq3" class="faq-question">❓ How does it work?</label>
+            <div class="faq-answer">
+                <p>By analyzing images/videos with AI to detect manipulations.</p>
+            </div>
         </div>
+
     </div>
 </div>
-
 <script>
-    // Bubble background
-    const canvas = document.getElementById('bg'), ctx = canvas.getContext('2d');
-    function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
-    window.addEventListener('resize', resize); resize();
-    let t=0;
+    /* Purple gradient background */
+    const canvas=document.getElementById('bg');
+    const ctx=canvas.getContext('2d');
+
+    function resize(){
+      canvas.width=innerWidth;
+      canvas.height=innerHeight;
+    }
+
+    window.addEventListener('resize',resize);
+    resize();
+
+    let t=0,particles=[];
+
+    for(let i=0;i<40;i++){
+      particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        vx:(Math.random()-0.5)*0.5,
+        vy:(Math.random()-0.5)*0.5,
+        size:Math.random()*2
+      });
+    }
+
     function draw(){
-      t+=0.02;
-      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-      g.addColorStop(0, `hsl(${200+Math.sin(t)*50},70%,30%)`);
-      g.addColorStop(1, `hsl(${160+Math.cos(t)*50},70%,15%)`);
-      ctx.fillStyle=g; ctx.fillRect(0,0,canvas.width,canvas.height);
+      t+=0.005;
+      const g=ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      g.addColorStop(0,hsl(${260+Math.sin(t)*30},60%,25%));
+      g.addColorStop(1,hsl(${280+Math.cos(t)*30},60%,10%));
+
+      ctx.fillStyle=g;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      for(let p of particles){
+        p.x+=p.vx;
+        p.y+=p.vy;
+
+        if(p.x<0 || p.x>canvas.width) p.vx*=-1;
+        if(p.y<0 || p.y>canvas.height) p.vy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx.fillStyle="rgba(174,247,232,0.6)";
+        ctx.fill();
+      }
+
       requestAnimationFrame(draw);
     }
+
     draw();
 
-    // Particles with connecting lines
-    const pCanvas=document.getElementById('particles'),pCtx=pCanvas.getContext('2d');
-    function resizeP(){pCanvas.width=innerWidth;pCanvas.height=innerHeight;}
-    window.addEventListener('resize',resizeP);resizeP();
-    const particles=[];
-    for(let i=0;i<80;i++){
-      particles.push({x:Math.random()*pCanvas.width,y:Math.random()*pCanvas.height,
-        vx:(Math.random()-0.5)*0.7,vy:(Math.random()-0.5)*0.7});
-    }
-    function drawParticles(){
-      pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
-      for(let p of particles){
-        p.x+=p.vx; p.y+=p.vy;
-        if(p.x<0||p.x>pCanvas.width) p.vx*=-1;
-        if(p.y<0||p.y>pCanvas.height) p.vy*=-1;
-        pCtx.beginPath();
-        pCtx.arc(p.x,p.y,2,0,Math.PI*2);
-        pCtx.fillStyle="rgba(255,255,255,0.7)";
-        pCtx.fill();
-      }
-      // draw connecting lines
-      for(let i=0;i<particles.length;i++){
-        for(let j=i+1;j<particles.length;j++){
-          const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
-          const dist=Math.sqrt(dx*dx+dy*dy);
-          if(dist<120){
-            pCtx.strokeStyle="rgba(255,255,255,"+(1-dist/120)+")";
-            pCtx.beginPath();
-            pCtx.moveTo(particles[i].x,particles[i].y);
-            pCtx.lineTo(particles[j].x,particles[j].y);
-            pCtx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(drawParticles);
-    }
-    drawParticles();
-
-    // Parallax logo
-    window.addEventListener('scroll',()=>{
-      const offset=window.scrollY*0.2;
-      document.body.style.setProperty('--scrollY', offset+"px");
-      document.body.style.setProperty('transform',`translateY(${offset}px)`);
-    });
-
-    // FAQ toggle
-    const toggleFaqBtn=document.getElementById("toggleFaqBtn");
-    const faqSection=document.getElementById("faqSection");
-    toggleFaqBtn.addEventListener("click",()=>{
-      if(faqSection.style.display==="none"){faqSection.style.display="block";toggleFaqBtn.textContent="Hide FAQ";}
-      else{faqSection.style.display="none";toggleFaqBtn.textContent="Show FAQ";}
-    });
+    /* FAQ Toggle */
     document.querySelectorAll(".faq-question").forEach(btn=>{
       btn.addEventListener("click",()=>{
         const ans=btn.nextElementSibling;
         ans.style.display=ans.style.display==="block"?"none":"block";
       });
     });
+
+    const toggleBtn = document.getElementById("toggleFaqBtn");
+    const faqSection = document.getElementById("faqSection");
+
+    toggleBtn.addEventListener("click", () => {
+        faqSection.style.display =
+            faqSection.style.display === "none" ? "block" : "none";
+        toggleBtn.textContent =
+            faqSection.style.display === "block" ? "Hide FAQ" : "Show FAQ";
+    });
+
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
